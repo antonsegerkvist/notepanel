@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7.20
+    container_name: notepanel_db
+    restart: always
+    volumes:
+      - notepanel_mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: dummypassword
+      MYSQL_DATABASE: notepanel
+      MYSQL_USER: webuser
+      MYSQL_PASSWORD: dummypassword
+    ports:
+      - "3306:3306"
+
+volumes:
+  notepanel_mysql_data:
