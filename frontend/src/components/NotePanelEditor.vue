@@ -98,18 +98,19 @@ export default Vue.extend({
         if (xhr.readyState === 4)
         {
           let o = JSON.parse(xhr.responseText);
-          if (xhr.status === 201)
+          if (xhr.status === 202)
           {
             this.$emit('note-updated');
           }
-          else if (xhr.status === 202)
+          else if (xhr.status === 201)
           {
-            this.$emit('note-created', o.note.id)
+            this.$emit('note-created', o.id)
           }
         }
       };
 
       xhr.open(method, endpoint);
+      xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.send(JSON.stringify({
         note: this.note
       }));

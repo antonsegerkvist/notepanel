@@ -21,7 +21,7 @@ func AddNote(note string, userID uint64) (uint64, error) {
 	}
 	defer stmt.Close()
 
-	result, err := stmt.Exec(note, userID)
+	result, err := stmt.Exec(userID, note)
 	if err != nil {
 		return 0, err
 	}

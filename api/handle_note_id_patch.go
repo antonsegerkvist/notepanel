@@ -52,6 +52,7 @@ func handleNoteIDPatch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.WriteHeader(http.StatusAccepted)
 	io.WriteString(w, `{"status":202}`)
 
 }

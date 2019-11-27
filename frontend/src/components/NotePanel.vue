@@ -6,7 +6,10 @@
       @add-note-click="handleNoteAddClick"/>
     <NotePanelEditor
       v-else-if="currentView === Views.EditView"
-      :id="selectedNoteID"/>
+      :id="selectedNoteID"
+      @back-click="currentView = Views.ListView"
+      @note-created="handleNoteCreated"
+      @note-updated="handleNoteUpdated"/>
   </div>
 </template>
 
@@ -55,6 +58,14 @@ export default Vue.extend({
     handleNoteAddClick () {
       this.selectedNoteID = 0;
       this.currentView = this.Views.EditView;
+    },
+
+    handleNoteCreated () {
+      this.currentView = this.Views.ListView;
+    },
+
+    handleNoteUpdated () {
+      this.currentView = this.Views.ListView;
     }
 
   },
