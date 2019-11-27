@@ -8,7 +8,7 @@
         <div v-for="note in notes" :key="note.id" @click="$emit('note-click', note.id)" class="note">
           <div class="info">
             <span class="note">{{ note.note }}</span>
-            <span class="date">Added: {{ note.createDate | pretifyDate }}</span>
+            <span class="date">Modified: {{ note.modifiedDate | beautifyDate }}</span>
           </div>
         </div>
       </div>
@@ -44,12 +44,17 @@ export default Vue.extend({
 
   filters: {
   
-    pretifyDate (dateString) {
+    beautifyDate (dateString) {
       let date = new Date(dateString);
 
       let year = date.getFullYear();
       let month = date.getMonth() + 1;
-      let day = (date.getDate() + 1)
+      let day = (date.getDate() + 1);
+      let hour = date.getHours() + '';
+      let minute = date.getMinutes() + '';
+
+      if (hour.length < 2) hour = '0' + hour;
+      if (minute.length < 2) minute = '0' + minute;
 
       month = ({
         '1': 'Jan',
@@ -66,7 +71,7 @@ export default Vue.extend({
         '12': 'Dec'
       })[month];
 
-      return `${day} ${month} ${year}`;
+      return `${day} ${month} ${year} ${hour}:${minute}`;
 
     }
   
