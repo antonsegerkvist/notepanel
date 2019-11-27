@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"html"
 	"io"
 	"net/http"
 
@@ -24,7 +23,7 @@ func handleNoteListGet(w http.ResponseWriter, r *http.Request) {
 	for _, v := range *notes {
 		notesInterface = append(notesInterface, map[string]interface{}{
 			"id":           v.ID,
-			"note":         html.EscapeString(v.Note),
+			"note":         v.Note,
 			"createDate":   v.CreateDate,
 			"modifiedDate": v.ModifiedDate,
 		})

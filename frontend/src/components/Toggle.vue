@@ -46,7 +46,7 @@ export default Vue.extend({
   box-shadow: -5px 0 5px rgba(0, 0, 0, 0.2);
   cursor: pointer; 
   font-family: 'Source Sans Pro', sans-serif;
-  height: 150px;
+  height: 120px;
   position: fixed;
   right: 0;
   transition: right 100ms ease-in-out;
