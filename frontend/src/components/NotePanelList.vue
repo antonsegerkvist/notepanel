@@ -17,6 +17,9 @@
       </div>
     </div>
     <div class="footer">
+      <div @click="$emit('add-note-click')" class="button button-add">
+        + Add Note
+      </div>
     </div>
   </div>
 </template>
@@ -199,6 +202,26 @@ export default Vue.extend({
     left: 10px;
     position: absolute;
     right: 10px;
+
+    & > .button {
+      background-color: #333;
+      color: #fff;
+      cursor: pointer;
+      height: 35px;
+      line-height: 35px;
+      padding: 0 20px;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    
+      &-add {
+        right: 0;
+      }
+
+      &:hover {
+        background-color: #555;
+      }
+    }
   }
 }
 </style>
