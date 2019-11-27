@@ -8,7 +8,7 @@
         <div v-for="note in notes" :key="note.id" class="note">
           <div class="info">
             <span class="note">{{ note.note }}</span>
-            <span class="date">{{ note.createDate }}</span>
+            <span class="date">Added {{ note.createDate | pretifyDate }}</span>
           </div>
         </div>
       </div>
@@ -37,6 +37,36 @@ export default Vue.extend({
 
   created () {
     this.fetchNotes();
+  },
+
+  filters: {
+  
+    pretifyDate (dateString) {
+      let date = new Date(dateString);
+
+      let year = date.getFullYear();
+      let month = date.getMonth() + 1;
+      let day = (date.getDate() + 1)
+
+      month = ({
+        '1': 'Jan',
+        '2': 'Feb',
+        '3': 'Mar',
+        '4': 'April',
+        '5': 'May',
+        '6': 'June',
+        '7': 'July',
+        '8': 'Aug',
+        '9': 'Sep',
+        '10': 'Oct',
+        '11': 'Nov',
+        '12': 'Dec'
+      })[month];
+
+      return `${day} ${month} ${year}`;
+
+    }
+  
   },
 
   methods: {
@@ -110,6 +140,7 @@ export default Vue.extend({
         background-color: #eee;
         float: left;
         height: 50px;
+        margin-bottom: 10px;
         position: relative;
         width: 100%;
 
@@ -127,13 +158,23 @@ export default Vue.extend({
             height: 25px;
             left: 0;
             line-height: 25px;
+            overflow: hidden;
             padding: 0 10px;
             position: absolute;
             right: 0;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
 
-          & > .note { top: 0; }
-          & > .date { bottom: 0; }
+          & > .note {
+            font-size: 16px;
+            top: 0;
+          }
+          & > .date {
+            font-size: 14px;
+            font-style: italic;
+            bottom: 0;
+          }
         }
       }
     }

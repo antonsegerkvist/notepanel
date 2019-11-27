@@ -11,5 +11,6 @@ import (
 //
 func Mount(router *mux.Router) {
 	router.HandleFunc("/api/note/list", handleNoteListGet).Methods(http.MethodGet)
-	router.HandleFunc("/api/note/{id:[0-9]+}", handleNoteGet).Methods(http.MethodGet)
+	router.HandleFunc("/api/note/{id:[0-9]+}", handleNoteIDGet).Methods(http.MethodGet)
+	router.HandleFunc("/api/note", handleNotePost).Methods(http.MethodPost)
 }
