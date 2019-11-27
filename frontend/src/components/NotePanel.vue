@@ -1,7 +1,12 @@
 <template>
   <div :class="getClass">
-    <NotePanelList v-if="currentView === Views.ListView"/>
-    <NotePanelEditor v-else-if="currentView === Views.EditView"/>
+    <NotePanelList
+      v-if="currentView === Views.ListView"
+      @note-click="handleNoteClick"
+      @add-note-click="handleNoteAddClick"/>
+    <NotePanelEditor
+      v-else-if="currentView === Views.EditView"
+      :id="selectedNoteID"/>
   </div>
 </template>
 
@@ -35,8 +40,23 @@ export default Vue.extend({
         EditView: 1
       },
 
-      currentView: 0
+      currentView: 0,
+      selectedNoteID: 0
     };
+  },
+
+  methods: {
+
+    handleNoteClick (noteID) {
+      this.selectedNoteID = noteID;
+      this.currentView = this.Views.EditView;
+    },
+
+    handleNoteAddClick () {
+      this.selectedNoteID = 0;
+      this.currentView = this.Views.EditView;
+    }
+
   },
 
   computed: {

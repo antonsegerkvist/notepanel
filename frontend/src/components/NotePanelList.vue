@@ -5,10 +5,10 @@
     </div>
     <div class="body">
       <div v-if="notes.length > 0" class="note-container">
-        <div v-for="note in notes" :key="note.id" class="note">
+        <div v-for="note in notes" :key="note.id" @click="$emit('note-click', note.id)" class="note">
           <div class="info">
             <span class="note">{{ note.note }}</span>
-            <span class="date">Added {{ note.createDate | pretifyDate }}</span>
+            <span class="date">Added: {{ note.createDate | pretifyDate }}</span>
           </div>
         </div>
       </div>
@@ -152,7 +152,7 @@ export default Vue.extend({
           cursor: pointer;
           left: 0;
           position: absolute;
-          right: 30px;
+          right: 0;
           top: 0;
 
           & > .note,
