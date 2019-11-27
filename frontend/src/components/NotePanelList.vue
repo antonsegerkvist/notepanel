@@ -111,8 +111,7 @@ export default Vue.extend({
 
   & > .header {
     border-bottom: 1px solid #eee;
-    box-sizing: border-box;
-    height: 51px;
+    height: 50px;
     left: 10px;
     line-height: 50px;
     font-size: 18px;

@@ -49,6 +49,7 @@ func handleNotePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.WriteHeader(http.StatusCreated)
 	io.WriteString(w, string(jsonBytes))
 
 }
