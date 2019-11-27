@@ -39,6 +39,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .toggle {
+  background-color: #fff;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   bottom: 20px;

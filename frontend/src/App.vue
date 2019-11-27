@@ -1,11 +1,16 @@
 <template>
   <div id="app">
-    <toggle @toggle="isPanelOpen = !isPanelOpen" :open="isPanelOpen"/>
+    <note-panel
+      :open="isPanelOpen"/>
+    <toggle
+      :open="isPanelOpen"
+      @toggle="isPanelOpen = !isPanelOpen"/>
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
+import NotePanel from '@/components/NotePanel.vue';
 import Toggle from '@/components/Toggle.vue';
 
 export default Vue.extend({
@@ -19,6 +24,7 @@ export default Vue.extend({
   },
 
   components: {
+    NotePanel,
     Toggle
   }
 
