@@ -5,8 +5,8 @@
     </div>
     <div class="body">
       <div v-if="notes.length > 0" class="note-container">
-        <div v-for="note in notes" :key="note.id" @click="$emit('note-click', note.id)" class="note">
-          <div class="info">
+        <div v-for="note in notes" :key="note.id" class="note">
+          <div @click="$emit('note-click', note.id)" class="info">
             <span class="note">{{ note.note }}</span>
             <span v-if="note.modifiedDate !== note.createDate" class="date">
               Modified: {{ note.modifiedDate | beautifyDate }}
@@ -15,6 +15,15 @@
               Created: {{ note.modifiedDate | beautifyDate }}
             </span>
           </div>
+          <div class="select-area">
+            <label class="label-checkbox">
+              <input
+                @click="event => handleCheckboxClick(event.target.checked, note.id)"
+                type="checkbox"
+                class="checkbox">
+              <span class="checkmark"></span>
+            </label>
+          </div>
         </div>
       </div>
       <div v-else class="empty-container">
@@ -22,6 +31,9 @@
       </div>
     </div>
     <div class="footer">
+      <div :class="deleteButtonClass" @click="handleDeleteClick">
+        <i class="material-icons icon">delete</i>
+      </div>
       <div @click="$emit('add-note-click')" class="button button-add">
         + Add Note
       </div>
@@ -39,7 +51,8 @@ export default Vue.extend({
   data () {
     return {
       keyword: '',
-      notes: []
+      notes: [],
+      markedNotes: []
     }
   },
 
@@ -103,6 +116,58 @@ export default Vue.extend({
 
       xhr.open('GET', '/api/note/list');
       xhr.send();
+    },
+
+    handleCheckboxClick (checked, noteID) {
+      console.log(checked);
+      console.log(noteID);
+      let index = this.markedNotes.indexOf(noteID);
+      if (checked === true && index === -1)
+      {
+        this.markedNotes.push(noteID);
+      }
+      else if (checked === false && index !== -1)
+      {
+        this.markedNotes.splice(index, 1);
+      }
+    },
+
+    handleDeleteClick () {
+      if (this.markedNotes.length === 0)
+      {
+        return;
+      }
+
+      var xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4)
+        {
+          if (xhr.status === 202)
+          {
+            this.fetchNotes();
+          }
+        }
+      };
+
+      xhr.open('DELETE', '/api/note/delete');
+      xhr.send(JSON.stringify({
+        ids: this.markedNotes
+      }));
+      this.markedNotes = [];
+    }
+
+  },
+
+  computed: {
+
+    deleteButtonClass () {
+      let ret = ['small-button', 'small-button-delete'];
+      if (this.markedNotes.length === 0)
+      {
+        ret.push('small-button-inactive');
+      }
+      return ret;
     }
 
   }
@@ -166,7 +231,7 @@ export default Vue.extend({
           cursor: pointer;
           left: 0;
           position: absolute;
-          right: 0;
+          right: 25px;
           top: 0;
 
           & > .note,
@@ -193,6 +258,56 @@ export default Vue.extend({
             bottom: 0;
           }
         }
+
+        & > .select-area {
+          bottom: 0;
+          box-sizing: border-box;
+          position: absolute;
+          right: 0;
+          top: 0;
+          width: 25px;
+
+          & > .label-checkbox {
+            box-sizing: border-box;
+            cursor: pointer;
+            height: 15px;
+            left: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 15px;
+
+            & > .checkbox {
+              height: 1px;
+              position: absolute;
+              opacity: 0;
+              width: 1px;
+            }
+            
+            & > .checkmark {
+              background-color: #fff;
+              border: 1px solid #333;
+              border-radius: 3px;
+              box-sizing: border-box;
+              display: inline-block;
+              height: 100%;
+              width: 100%;
+            }
+
+            & > .checkbox:checked ~ .checkmark::before {
+              border-left: 1px solid #000;
+              border-bottom: 1px solid #000;
+              content: '';
+              display: inline-block;
+              height: 3px;
+              left: 50%;
+              position: absolute;
+              top: 50%;
+              transform: translate(-50%, -50%) rotate(-45deg);
+              width: 5px;
+            }
+          }
+        }
       }
     }
 
@@ -216,6 +331,31 @@ export default Vue.extend({
     left: 10px;
     position: absolute;
     right: 10px;
+
+    & > .small-button {
+      background-color: #333;
+      color: #fff;
+      cursor: pointer;
+      height: 35px;
+      line-height: 35px;
+      position: absolute;
+      text-align: center;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 35px;
+
+      &-inactive {
+        opacity: 0.5;
+      }
+
+      & > .icon {
+        font-size: 16px;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
 
     & > .button {
       background-color: #333;
