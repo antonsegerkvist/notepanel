@@ -8,7 +8,12 @@
         <div v-for="note in notes" :key="note.id" @click="$emit('note-click', note.id)" class="note">
           <div class="info">
             <span class="note">{{ note.note }}</span>
-            <span class="date">Modified: {{ note.modifiedDate | beautifyDate }}</span>
+            <span v-if="note.modifiedDate !== note.createDate" class="date">
+              Modified: {{ note.modifiedDate | beautifyDate }}
+            </span>
+            <span v-else class="date">
+              Created: {{ note.modifiedDate | beautifyDate }}
+            </span>
           </div>
         </div>
       </div>
