@@ -119,8 +119,6 @@ export default Vue.extend({
     },
 
     handleCheckboxClick (checked, noteID) {
-      console.log(checked);
-      console.log(noteID);
       let index = this.markedNotes.indexOf(noteID);
       if (checked === true && index === -1)
       {
