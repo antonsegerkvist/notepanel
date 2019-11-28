@@ -148,7 +148,8 @@ export default Vue.extend({
         }
       };
 
-      xhr.open('DELETE', '/api/note/delete');
+      xhr.open('DELETE', '/api/note');
+      xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.send(JSON.stringify({
         ids: this.markedNotes
       }));
