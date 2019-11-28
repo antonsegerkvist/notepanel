@@ -50,3 +50,5 @@ buttons.
 The panel's subcomponents are a list view and a editor view. The list view contains a list of notes which is fetched from the backend using JSON.
 
 The note list just prints the text of the note content as text and under it it prints when the note was created and the date of last modification. The modification date is only printed if the modification date is defferent from the create date.
+
+The edit panel only has an edit mode. It currently only supports plain text. A WYSIWYG editor like TinyMCE could have been used, but that makes note preview text a little bit more complicated to generate.
