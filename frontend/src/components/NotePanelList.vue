@@ -149,7 +149,12 @@ export default Vue.extend({
         height: 50px;
         margin-bottom: 10px;
         position: relative;
+        transition: background-color 100ms ease-in-out;
         width: 100%;
+
+        &:hover {
+          background-color: #f5f5f5;
+        }
 
         & > .info {
           bottom: 0;
