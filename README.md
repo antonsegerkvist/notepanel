@@ -33,4 +33,32 @@ The note list just prints the text of the note content as text and under it it p
 
 The edit panel only has an edit mode. It currently only supports plain text. A WYSIWYG editor like TinyMCE could have been used, but that makes the note preview text a little bit more complicated to generate.
 
-Improvements might c
+Furter features might be added to contribute to the user expericence of the component.
+
+### Running
+
+First start the mysql server:
+
+```
+docker-compose up -d
+```
+
+Secondly load up the database from the file database.sql file and
+then build the frontend by running the following in the frontend
+directory:
+
+```
+yarn; yarn build
+
+or
+
+npm install; npm run build build
+```
+
+And lastly start the HTTP server:
+
+```
+make
+```
+
+The server will now be running on the port 8080.
