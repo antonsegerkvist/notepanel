@@ -6,6 +6,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/notepanel/api"
+	"github.com/notepanel/web"
 )
 
 //
@@ -16,6 +17,7 @@ func Run() {
 	router := mux.NewRouter()
 
 	api.Mount(router)
+	web.Mount(router)
 
 	server := http.Server{
 		Addr:    ":8080",
