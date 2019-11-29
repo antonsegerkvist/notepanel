@@ -15,27 +15,7 @@ POST   /api/note
 ```
 
 The first handles getting the content of a single note, the second updates the content of a note and updates the modified date, the third returns a list of all notes, the fourth handles deletions of notes and the last one adds a new note.
-
-All endpoints use json for communications. Both the POST and PATCH endpoints expect an interface of the following structure:
-
-```json
-{
-  "note": "Note text here"
-}
-```
-
-And they return the following json structures respectively:
-
-```json
-{
-  "status": 201,
-  "id": 10
-}
-
-{
-  "status": 202
-}
-```
+All endpoints use json for communications.
 
 ### Frontend
 
@@ -51,4 +31,6 @@ The panel's subcomponents are a list view and a editor view. The list view conta
 
 The note list just prints the text of the note content as text and under it it prints when the note was created and the date of last modification. The modification date is only printed if the modification date is defferent from the create date.
 
-The edit panel only has an edit mode. It currently only supports plain text. A WYSIWYG editor like TinyMCE could have been used, but that makes note preview text a little bit more complicated to generate.
+The edit panel only has an edit mode. It currently only supports plain text. A WYSIWYG editor like TinyMCE could have been used, but that makes the note preview text a little bit more complicated to generate.
+
+Improvements might c
