@@ -4,7 +4,11 @@
       <h2 class="title">Manage Your Notes</h2>
     </div>
     <div class="body">
-      <div v-if="notes.length > 0" class="note-container">
+      <div v-if="error" class="center-container">
+        Could not fetch your notes.<br>
+        (Error code: {{ error }})
+      </div>
+      <div v-else-if="notes.length > 0" class="note-container">
         <div v-for="note in notes" :key="note.id" class="note">
           <div @click="$emit('note-click', note.id)" class="info">
             <span class="note">{{ note.note }}</span>
@@ -26,8 +30,8 @@
           </div>
         </div>
       </div>
-      <div v-else class="empty-container">
-        Press the pluss at the bottom to add a new note
+      <div v-else class="center-container">
+        Press the plus at the bottom to add a new note
       </div>
     </div>
     <div class="footer">
@@ -50,9 +54,10 @@ export default Vue.extend({
 
   data () {
     return {
-      keyword: '',
       notes: [],
-      markedNotes: []
+      markedNotes: [],
+
+      error: 0
     }
   },
 
@@ -109,7 +114,12 @@ export default Vue.extend({
             if (o)
             {
               this.notes = o.notes;
+              this.error = 0;
             }
+          }
+          else
+          {
+            this.error = xhr.status;
           }
         }
       };
@@ -310,7 +320,7 @@ export default Vue.extend({
       }
     }
 
-    & > .empty-container {
+    & > .center-container {
       font-style: italic;
       left: 50%;
       line-height: 1.5;
