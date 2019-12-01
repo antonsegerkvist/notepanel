@@ -11,7 +11,7 @@
       <div @click="$emit('back-click')" class="button button-back">
         Back
       </div>
-      <div @click="saveNote" class="button button-save">
+      <div @click="handleSaveNote" class="button button-save">
         Save
       </div>
     </div>
@@ -74,7 +74,7 @@ export default Vue.extend({
       xhr.send();
     },
 
-    saveNote () {
+    handleSaveNote () {
       let method = '';
       let endpoint = '';
 
@@ -88,10 +88,10 @@ export default Vue.extend({
         method = 'POST';
         endpoint = '/api/note';
       }
-      this.sendNote(method, endpoint);
+      this.saveNote(method, endpoint);
     },
 
-    sendNote (method, endpoint) {
+    saveNote (method, endpoint) {
       let xhr = new XMLHttpRequest();
 
       xhr.onreadystatechange = () => {
