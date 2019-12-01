@@ -160,6 +160,7 @@ export default Vue.extend({
         return;
       }
 
+      this.isLoading = true;
       var xhr = new XMLHttpRequest();
 
       xhr.onreadystatechange = () => {
@@ -169,6 +170,7 @@ export default Vue.extend({
           {
             this.fetchNotes();
           }
+          this.isLoading = false;
         }
       };
 
