@@ -52,7 +52,7 @@ yarn; yarn build
 
 or
 
-npm install; npm run build build
+npm install; npm run build
 ```
 
 And lastly start the HTTP server:
