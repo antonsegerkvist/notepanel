@@ -1,59 +1,71 @@
 <template>
   <div class="note-panel-list">
-    <div class="header">
-      <h2 class="title">Manage Your Notes</h2>
-    </div>
-    <div class="body">
-      <div v-if="error" class="center-container">
-        Could not fetch your notes.<br>
-        (Error code: {{ error }})
+    <template v-if="isLoading">
+      <spinner class="center"/>
+    </template>
+    <template v-else>
+      <div class="header">
+        <h2 class="title">Manage Your Notes</h2>
       </div>
-      <div v-else-if="notes.length > 0" class="note-container">
-        <div v-for="note in notes" :key="note.id" class="note">
-          <div @click="$emit('note-click', note.id)" class="info">
-            <span class="note">{{ note.note }}</span>
-            <span v-if="note.modifiedDate !== note.createDate" class="date">
-              Modified: {{ note.modifiedDate | beautifyDate }}
-            </span>
-            <span v-else class="date">
-              Created: {{ note.modifiedDate | beautifyDate }}
-            </span>
-          </div>
-          <div class="select-area">
-            <label class="label-checkbox">
-              <input
-                @click="event => handleCheckboxClick(event.target.checked, note.id)"
-                type="checkbox"
-                class="checkbox">
-              <span class="checkmark"></span>
-            </label>
+      <div class="body">
+        <div v-if="error" class="center-container">
+          Could not fetch your notes.<br>
+          (Error code: {{ error }})
+        </div>
+        <div v-else-if="notes.length > 0" class="note-container">
+          <div v-for="note in notes" :key="note.id" class="note">
+            <div @click="$emit('note-click', note.id)" class="info">
+              <span class="note">{{ note.note }}</span>
+              <span v-if="note.modifiedDate !== note.createDate" class="date">
+                Modified: {{ note.modifiedDate | beautifyDate }}
+              </span>
+              <span v-else class="date">
+                Created: {{ note.modifiedDate | beautifyDate }}
+              </span>
+            </div>
+            <div class="select-area">
+              <label class="label-checkbox">
+                <input
+                  @click="event => handleCheckboxClick(event.target.checked, note.id)"
+                  type="checkbox"
+                  class="checkbox">
+                <span class="checkmark"></span>
+              </label>
+            </div>
           </div>
         </div>
+        <div v-else class="center-container">
+          Press the plus at the bottom to add a new note
+        </div>
       </div>
-      <div v-else class="center-container">
-        Press the plus at the bottom to add a new note
+      <div class="footer">
+        <div :class="deleteButtonClass" @click="handleDeleteClick">
+          <i class="material-icons icon">delete</i>
+        </div>
+        <div @click="$emit('add-note-click')" class="button button-add">
+          + Add Note
+        </div>
       </div>
-    </div>
-    <div class="footer">
-      <div :class="deleteButtonClass" @click="handleDeleteClick">
-        <i class="material-icons icon">delete</i>
-      </div>
-      <div @click="$emit('add-note-click')" class="button button-add">
-        + Add Note
-      </div>
-    </div>
+    </template>
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
+import Spinner from './Spinner.vue';
 
 export default Vue.extend({
 
   name: 'note-panel-list',
 
+  components: {
+    Spinner
+  },
+
   data () {
     return {
+      isLoading: false,
+
       notes: [],
       markedNotes: [],
 
@@ -103,6 +115,7 @@ export default Vue.extend({
   methods: {
 
     fetchNotes () {
+      this.isLoading = true;
       var xhr = new XMLHttpRequest();
 
       xhr.onreadystatechange = () => {
@@ -121,6 +134,7 @@ export default Vue.extend({
           {
             this.error = xhr.status;
           }
+          this.isLoading = false;
         }
       };
 
@@ -192,6 +206,13 @@ export default Vue.extend({
   position: absolute;
   right: 0;
   top: 0;
+
+  & > .center {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
 
   & > .header {
     border-bottom: 1px solid #eee;

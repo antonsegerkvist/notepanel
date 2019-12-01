@@ -1,37 +1,47 @@
 <template>
   <div class="note-panel-editor">
-    <div class="header">
-      <h2 class="title">Edit Note</h2>
-    </div>
-    <div class="body">
-      <div v-if="errorType === 1" class="error-window">
-        Could not fetch the note information<br>
-        (Error Code: {{ error }})
+    <template v-if="isLoading === true">
+      <spinner class="center"/>
+    </template>
+    <template v-else>
+      <div class="header">
+        <h2 class="title">Edit Note</h2>
       </div>
-      <div v-else-if="errorType === 2" class="error-window">
-        Could not save the note information<br>
-        (Error Code: {{ error }})
+      <div class="body">
+        <div v-if="errorType === 1" class="error-window">
+          Could not fetch the note information<br>
+          (Error Code: {{ error }})
+        </div>
+        <div v-else-if="errorType === 2" class="error-window">
+          Could not save the note information<br>
+          (Error Code: {{ error }})
+        </div>
+        <textarea v-else v-model="note" placeholder="Edit your note here" class="editor">
+        </textarea>
       </div>
-      <textarea v-else v-model="note" placeholder="Edit your note here" class="editor">
-      </textarea>
-    </div>
-    <div class="footer">
-      <div @click="$emit('back-click')" class="button button-back">
-        Back
+      <div class="footer">
+        <div @click="$emit('back-click')" class="button button-back">
+          Back
+        </div>
+        <div @click="handleSaveNote" class="button button-save">
+          Save
+        </div>
       </div>
-      <div @click="handleSaveNote" class="button button-save">
-        Save
-      </div>
-    </div>
+    </template>
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
+import Spinner from './Spinner.vue';
 
 export default Vue.extend({
 
   name: 'note-panel-editor',
+
+  components: {
+    Spinner
+  },
 
   props: {
 
@@ -44,6 +54,8 @@ export default Vue.extend({
 
   data () {
     return {
+      isLoading: true,
+
       note: '',
       createDate: '',
       modifiedDate: '',
@@ -63,6 +75,7 @@ export default Vue.extend({
   methods: {
 
     fetchNote () {
+      this.isLoading = true;
       let xhr = new XMLHttpRequest();
 
       xhr.onreadystatechange = () => {
@@ -83,6 +96,7 @@ export default Vue.extend({
             this.error = xhr.status;
             this.errorType = 1;
           }
+          this.isLoading = false;
         }
       };
 
@@ -108,12 +122,12 @@ export default Vue.extend({
     },
 
     saveNote (method, endpoint) {
+      this.isLoading = true;
       let xhr = new XMLHttpRequest();
 
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4)
         {
-
           if (xhr.status === 202)
           {
             this.$emit('note-updated');
@@ -128,6 +142,7 @@ export default Vue.extend({
             this.error = xhr.status;
             this.errorType = 2;
           }
+          this.isLoading = false;
         }
       };
 
@@ -151,6 +166,13 @@ export default Vue.extend({
   position: absolute;
   right: 0;
   top: 0;
+
+  & > .center {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
 
   & > .header {
     border-bottom: 1px solid #eee;
