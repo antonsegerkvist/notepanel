@@ -4,7 +4,15 @@
       <h2 class="title">Edit Note</h2>
     </div>
     <div class="body">
-      <textarea v-model="note" placeholder="Edit your note here" class="editor">
+      <div v-if="errorType === 1" class="error-window">
+        Could not fetch the note information<br>
+        (Error Code: {{ error }})
+      </div>
+      <div v-else-if="errorType === 2" class="error-window">
+        Could not save the note information<br>
+        (Error Code: {{ error }})
+      </div>
+      <textarea v-else v-model="note" placeholder="Edit your note here" class="editor">
       </textarea>
     </div>
     <div class="footer">
@@ -38,7 +46,10 @@ export default Vue.extend({
     return {
       note: '',
       createDate: '',
-      modifiedDate: ''
+      modifiedDate: '',
+
+      errorType: 0,
+      error: 0
     }
   },
 
@@ -66,6 +77,11 @@ export default Vue.extend({
               this.createDate = o.note.createDate;
               this.modifiedDate = o.note.modifiedDate;
             }
+          }
+          else
+          {
+            this.error = xhr.status;
+            this.errorType = 1;
           }
         }
       };
@@ -97,14 +113,20 @@ export default Vue.extend({
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4)
         {
-          let o = JSON.parse(xhr.responseText);
+
           if (xhr.status === 202)
           {
             this.$emit('note-updated');
           }
           else if (xhr.status === 201)
           {
+            let o = JSON.parse(xhr.responseText);
             this.$emit('note-created', o.id)
+          }
+          else
+          {
+            this.error = xhr.status;
+            this.errorType = 2;
           }
         }
       };
@@ -147,6 +169,16 @@ export default Vue.extend({
     position: absolute;
     right: 10px;
     top: 61px;
+
+    & > .error-window {
+      font-style: italic;
+      left: 50%;
+      line-height: 1.5;
+      position: absolute;
+      text-align: center;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
 
     & > .editor {
       appearance: none;
